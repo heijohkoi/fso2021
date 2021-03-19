@@ -1,8 +1,9 @@
 import React from 'react';
 
 const Course = ({ courses }) => {
-  const Header = (props) => {
-    return <h2 key={props.course.id}>{props.course.name}</h2>;
+  const Header = ({ course }) => {
+    // console.log('from Header', course.name, 'id=', course.id);
+    return <h2>{course.name}</h2>;
   };
 
   const Content = ({ course }) => {
@@ -34,7 +35,7 @@ const Course = ({ courses }) => {
     );
 
     return (
-      <p key={course.id}>
+      <p>
         <strong>total of {totalCount} exercises</strong>
       </p>
     );
@@ -42,14 +43,14 @@ const Course = ({ courses }) => {
 
   return (
     <div>
-      {courses.map((course) => {
+      <h1>Web development curriculum</h1>
+      {courses.map((course, index) => {
         return (
-          <>
-            <h1>Web development curriculum</h1>
+          <div key={course.id}>
             <Header course={course} />
             <Content course={course} />
             <Total course={course} />
-          </>
+          </div>
         );
       })}
     </div>
