@@ -1,8 +1,10 @@
 import React from 'react';
 import Country from './Country';
 
-const Countries = ({ countries, filter }) => {
+const Countries = ({ countries, filter, setFilter }) => {
   //   console.log('props from Countries:', countries);
+
+  //   setTimeout(() => setFilter('Finland'), 5000);
 
   const contentToShow =
     filter === ''
@@ -30,7 +32,12 @@ const Countries = ({ countries, filter }) => {
         ? 'Too many matches, specify another filter'
         : contentToShow.length > 1
         ? contentToShow.map((country) => (
-            <p key={country.name}>{country.name}</p>
+            <p key={country.name}>
+              {country.name}{' '}
+              <button onClick={() => setFilter(country.name)}>
+                show
+              </button>
+            </p>
           ))
         : contentToShow.map((country) => (
             <Country key={country.name} country={country} />

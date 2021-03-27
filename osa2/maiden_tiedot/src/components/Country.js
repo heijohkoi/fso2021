@@ -15,7 +15,7 @@ const Country = ({ country }) => {
       <h2>languages</h2>
       <ul>
         {country.languages.map((language) => (
-          <li>{language.name}</li>
+          <li key={language.name}>{language.name}</li>
         ))}
       </ul>
       <img
