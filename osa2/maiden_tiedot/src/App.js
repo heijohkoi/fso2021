@@ -7,6 +7,8 @@ const App = () => {
   const [newFilter, setNewFilter] = useState('');
   const [coutryData, setCountryData] = useState('');
 
+  const api_key = process.env.REACT_APP_API_KEY;
+
   useEffect(() => {
     axios
       .get('https://restcountries.eu/rest/v2/all')
@@ -27,6 +29,7 @@ const App = () => {
         countries={coutryData}
         filter={newFilter}
         setFilter={setNewFilter}
+        api_key={api_key}
       />
     </div>
   );

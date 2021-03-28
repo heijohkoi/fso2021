@@ -1,7 +1,7 @@
 import React from 'react';
 import Country from './Country';
 
-const Countries = ({ countries, filter, setFilter }) => {
+const Countries = ({ countries, filter, setFilter, api_key }) => {
   //   console.log('props from Countries:', countries);
 
   //   setTimeout(() => setFilter('Finland'), 5000);
@@ -40,7 +40,11 @@ const Countries = ({ countries, filter, setFilter }) => {
             </p>
           ))
         : contentToShow.map((country) => (
-            <Country key={country.name} country={country} />
+            <Country
+              key={country.name}
+              country={country}
+              api_key={api_key}
+            />
           ))}
     </div>
   );
