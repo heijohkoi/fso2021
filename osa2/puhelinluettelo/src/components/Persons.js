@@ -1,7 +1,7 @@
 import React from 'react';
 import Person from './Person';
 
-const Persons = ({ persons, newFilter }) => {
+const Persons = ({ persons, newFilter, deleteNumber }) => {
   const contentToShow =
     newFilter === ''
       ? persons
@@ -18,8 +18,10 @@ const Persons = ({ persons, newFilter }) => {
       {contentToShow.map((person) => (
         <Person
           key={person.name}
+          id={person.id}
           name={person.name}
           number={person.number}
+          deleteNumber={deleteNumber}
         />
       ))}
     </ul>

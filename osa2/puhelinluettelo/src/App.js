@@ -32,6 +32,17 @@ const App = () => {
     setNewNumber(event.target.value);
   };
 
+  const handleDeleteClick = (id, name) => {
+    console.log('clicked delete ' + id);
+    if (window.confirm(`Delete ${name}?`) === true) {
+      numberService.deleteId(id).then((returnValue) => {
+        if (returnValue === true) {
+          setPersons(persons.filter((p) => p.id !== id));
+        }
+      });
+    }
+  };
+
   const addName = (event) => {
     event.preventDefault();
     if (persons.every((person) => person.name !== newName)) {
@@ -68,7 +79,11 @@ const App = () => {
 
       <h3>Numbers</h3>
 
-      <Persons persons={persons} newFilter={newFilter} />
+      <Persons
+        persons={persons}
+        newFilter={newFilter}
+        deleteNumber={handleDeleteClick}
+      />
     </div>
   );
 };
