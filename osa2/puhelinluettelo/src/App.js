@@ -3,12 +3,15 @@ import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
 import numberService from './services/numbers';
+import Notification from './components/Notification';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newFilter, setNewFilter] = useState('');
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
+  const [alertMessage, setAlertMessage] = useState(null);
+  const [attentionMessage, setAttentionMessage] = useState(null);
 
   useEffect(() => {
     numberService.getAll().then((initialPersons) => {
@@ -33,13 +36,15 @@ const App = () => {
 
   const handleDeleteClick = (id, name) => {
     // console.log('clicked delete ' + id);
-    if (window.confirm(`Delete ${name}?`) === true) {
-      numberService.deleteId(id).then((returnValue) => {
-        if (returnValue === true) {
-          setPersons(persons.filter((p) => p.id !== id));
-        }
-      });
-    }
+    numberService.deleteId(id).then((returnValue) => {
+      if (returnValue === true) {
+        setPersons(persons.filter((p) => p.id !== id));
+        setAlertMessage(`Deleted ${name}`);
+        setTimeout(() => {
+          setAlertMessage(null);
+        }, 5000);
+      }
+    });
   };
 
   const addName = (event) => {
@@ -52,38 +57,43 @@ const App = () => {
         })
         .then((returnedPerson) => {
           setPersons(persons.concat(returnedPerson));
+          setAttentionMessage(`Added ${newName}`);
+          setTimeout(() => {
+            setAttentionMessage(null);
+          }, 5000);
           setNewName('');
           setNewNumber('');
         });
     } else {
-      const confirmChange = window.confirm(
-        `${newName} is already added to phonebook, replace the old number with a new one?`,
-      );
-      if (confirmChange) {
-        const id = persons.find((person) => person.name === newName)
-          .id;
-        // console.log('updating id: ', id);
-        numberService
-          .update(id, {
-            name: newName,
-            number: newNumber,
-          })
-          .then((returnedPerson) => {
-            setPersons(
-              persons.map((person) =>
-                person.id !== id ? person : returnedPerson,
-              ),
-            );
-          });
-        setNewName('');
-        setNewNumber('');
-      }
+      const id = persons.find((person) => person.name === newName).id;
+      numberService
+        .update(id, {
+          name: newName,
+          number: newNumber,
+        })
+        .then((returnedPerson) => {
+          setPersons(
+            persons.map((person) =>
+              person.id !== id ? person : returnedPerson,
+            ),
+          );
+        });
+      setAttentionMessage(`Updated ${newName}`);
+      setTimeout(() => {
+        setAttentionMessage(null);
+      }, 5000);
+      setNewName('');
+      setNewNumber('');
     }
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification
+        alert={alertMessage}
+        attention={attentionMessage}
+      />
 
       <Filter filter={newFilter} filterChange={handleFilterChange} />
 
