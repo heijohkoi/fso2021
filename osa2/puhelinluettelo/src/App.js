@@ -77,13 +77,24 @@ const App = () => {
               person.id !== id ? person : returnedPerson,
             ),
           );
+          setAttentionMessage(`Updated ${newName}`);
+          setTimeout(() => {
+            setAttentionMessage(null);
+          }, 5000);
+          setNewName('');
+          setNewNumber('');
+        })
+        .catch((error) => {
+          setAlertMessage(
+            `Information of ${newName} has already been removed from server`,
+          );
+          setTimeout(() => {
+            setAlertMessage(null);
+          }, 5000);
+          setPersons(persons.filter((p) => p.name !== newName));
+          setNewName('');
+          setNewNumber('');
         });
-      setAttentionMessage(`Updated ${newName}`);
-      setTimeout(() => {
-        setAttentionMessage(null);
-      }, 5000);
-      setNewName('');
-      setNewNumber('');
     }
   };
 
