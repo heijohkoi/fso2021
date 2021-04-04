@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
@@ -33,7 +32,7 @@ const App = () => {
   };
 
   const handleDeleteClick = (id, name) => {
-    console.log('clicked delete ' + id);
+    // console.log('clicked delete ' + id);
     if (window.confirm(`Delete ${name}?`) === true) {
       numberService.deleteId(id).then((returnValue) => {
         if (returnValue === true) {
@@ -57,7 +56,28 @@ const App = () => {
           setNewNumber('');
         });
     } else {
-      window.alert(`${newName} is already added to phonebook`);
+      const confirmChange = window.confirm(
+        `${newName} is already added to phonebook, replace the old number with a new one?`,
+      );
+      if (confirmChange) {
+        const id = persons.find((person) => person.name === newName)
+          .id;
+        // console.log('updating id: ', id);
+        numberService
+          .update(id, {
+            name: newName,
+            number: newNumber,
+          })
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== id ? person : returnedPerson,
+              ),
+            );
+          });
+        setNewName('');
+        setNewNumber('');
+      }
     }
   };
 
