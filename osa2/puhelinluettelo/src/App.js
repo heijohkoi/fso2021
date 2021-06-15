@@ -63,7 +63,13 @@ const App = () => {
           }, 5000);
           setNewName('');
           setNewNumber('');
+        })
+        .catch((error) => {
+          setAlertMessage("Name can't be empty");
         });
+      setTimeout(() => {
+        setAlertMessage(null);
+      }, 5000);
     } else {
       const id = persons.find((person) => person.name === newName).id;
       numberService
