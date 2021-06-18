@@ -65,7 +65,7 @@ const App = () => {
           setNewNumber('');
         })
         .catch((error) => {
-          setAlertMessage("Name can't be empty");
+          setAlertMessage(error.response.data['error']);
         });
       setTimeout(() => {
         setAlertMessage(null);
